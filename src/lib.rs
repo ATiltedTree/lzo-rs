@@ -1,5 +1,3 @@
-//! lel
-#![deny(missing_docs)]
 use lzo_sys as ffi;
 
 use std::io;
