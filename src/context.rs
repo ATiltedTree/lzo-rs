@@ -1,6 +1,7 @@
 use crate::algorithms::{Algorithm, ONE};
 use crate::{map_return_code, CompressionLevel};
 use lzo_sys as ffi;
+use std::convert::TryInto;
 use std::io;
 
 pub struct Context {
@@ -20,7 +21,7 @@ impl Context {
             compress_function: compress,
             decompress_function: algorithm.decompress_function,
             optimize_function: algorithm.optimize_function,
-            workmem: Vec::with_capacity(workmem as usize),
+            workmem: Vec::with_capacity(workmem.try_into().unwrap()),
         }
     }
     pub fn compress(&mut self, src: &[u8]) -> io::Result<Vec<u8>> {
@@ -32,12 +33,12 @@ impl Context {
         unsafe {
             let code = compress_function(
                 src.as_ptr(),
-                src_len as u64,
+                src_len.try_into().unwrap(),
                 buffer.as_mut_ptr(),
                 buffer_len,
                 self.workmem.as_mut_ptr(),
             );
-            buffer.set_len(*buffer_len as usize);
+            buffer.set_len((*buffer_len).try_into().unwrap());
             map_return_code(code, buffer)
         }
     }
@@ -50,12 +51,12 @@ impl Context {
         unsafe {
             let code = decompress_function(
                 src.as_ptr(),
-                src_len as u64,
+                src_len.try_into().unwrap(),
                 buffer.as_mut_ptr(),
                 buffer_len,
                 self.workmem.as_mut_ptr(),
             );
-            buffer.set_len(*buffer_len as usize);
+            buffer.set_len((*buffer_len).try_into().unwrap());
             map_return_code(code, buffer)
         }
     }
@@ -68,16 +69,16 @@ impl Context {
             unsafe {
                 let code = optimize_function(
                     src.as_mut_ptr(),
-                    src_len as u64,
+                    src_len.try_into().unwrap(),
                     buffer.as_mut_ptr(),
                     buffer_len,
                     self.workmem.as_mut_ptr(),
                 );
-                buffer.set_len(*buffer_len as usize);
+                buffer.set_len((*buffer_len).try_into().unwrap());
                 map_return_code(code, buffer)
             }
         } else {
-            unimplemented!()
+            unimplemented!("This algorithm does not support optimizing!")
         }
     }
 }
@@ -90,7 +91,7 @@ impl Default for Context {
             compress_function: compress,
             decompress_function: ONE.decompress_function,
             optimize_function: ONE.optimize_function,
-            workmem: Vec::with_capacity(workmem as usize),
+            workmem: Vec::with_capacity(workmem.try_into().unwrap()),
         }
     }
 }
