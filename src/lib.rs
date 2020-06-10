@@ -1,7 +1,3 @@
-#![deny(clippy::nursery)]
-#![deny(clippy::pedantic)]
-#![doc(html_root_url = "https://docs.rs/lzo/0.1.0")]
-
 use lzo_sys as ffi;
 
 use std::io;
