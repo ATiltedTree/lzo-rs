@@ -5,7 +5,6 @@ on:
     branches:
     - master
   pull_request:
-    
 
 jobs:
   format:
@@ -37,7 +36,7 @@ jobs:
       with:
         submodules: true
     - name: Setup | Cache cargo
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: |
           ~/.cargo/registry
@@ -63,7 +62,7 @@ jobs:
       with:
         submodules: true
     - name: Setup | Cache cargo
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: |
           ~/.cargo/registry
@@ -99,7 +98,7 @@ jobs:
       with:
         submodules: true
     - name: Setup | Cache cargo
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: |
           ~/.cargo/registry
