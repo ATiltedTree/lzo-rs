@@ -1,0 +1,16 @@
+{
+  "files.associations": {
+    ".firebaserc": "json",
+    "*.idl": "idl",
+    "*.rc": "cpp",
+    "*.am": "makefile",
+    "*.ll": "lex",
+    ".clang-tidy": "yaml",
+    "*.qrc": "xml",
+    "*.desktop": "ini",
+    "*.ch": "c"
+  },
+  "cSpell.words": [
+    "wrkmem"
+  ]
+}

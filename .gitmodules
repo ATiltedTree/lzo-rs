@@ -1,0 +1,3 @@
+[submodule "lzo-sys/lzo"]
+	path = lzo-sys/lzo
+	url = https://github.com/nemequ/lzo.git

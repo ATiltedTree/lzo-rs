@@ -1,0 +1,15 @@
+[package]
+name = "lzo"
+version = "0.1.0"
+authors = ["Tilmann Meyer <allescrafterx@gmail.com>"]
+edition = "2018"
+description = "A wrapper for the real-time data compression library lzo"
+repository = "https://github.com/ATiltedTree/lzo-rs"
+keywords = ["compression"]
+categories = ["api-bindings", "compression"]
+readme = "README.md"
+license = "GPL2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+lzo-sys = { path = "./lzo-sys", version = "0.1.0" }

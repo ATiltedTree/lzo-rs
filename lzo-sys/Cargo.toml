@@ -1,0 +1,23 @@
+[package]
+name = "lzo-sys"
+version = "0.1.0+2.10.0" # First version is the package version, second after the plus is the corresponding lzo version
+authors = ["Tilmann Meyer <allescrafterx@gmail.com>"]
+edition = "2018"
+description = "FFI bindings for the real-time data compression library lzo"
+repository = "https://github.com/ATiltedTree/lzo-rs/tree/master/lzo-sys"
+keywords = ["compression"]
+categories = ["external-ffi-bindings", "no-std", "compression"]
+license = "GPL2"
+links = "lzo"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "0.2.71"
+
+[build-dependencies]
+pkg-config = "0.3.17"
+cc = "1.0.54"
+
+[features]
+static = []
