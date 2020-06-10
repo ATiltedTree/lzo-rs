@@ -2,31 +2,45 @@ use std::path::PathBuf;
 use std::{env, fs};
 
 fn build_lzo(out_path: PathBuf) -> Vec<PathBuf> {
-    let source = PathBuf::from("lzo/src");
+    let source = PathBuf::from("lzo");
 
     if !source.exists() {
-        panic!("Folder 'lzo/src' does not exists. Maybe you forgot to clone the submodule?");
+        panic!("Folder 'lzo' does not exists. Maybe you forgot to clone the submodule?");
     }
 
     let mut build = cc::Build::new();
-    build.include(source);
+    build
+        .include(source.join("src"))
+        .include(source.join("include"));
 
-    fs::read_dir("lzo/src").unwrap().for_each(|file| {
-        let file_path = file.unwrap().path();
-        if file_path.extension().unwrap() == "c" {
-            build.file(file_path);
+    for f in fs::read_dir(source.join("src")).unwrap() {
+        let file = f.unwrap();
+        if file.file_name().to_string_lossy().ends_with(".c") {
+            build.file(file.path());
         }
-    });
+    }
 
     build.compile("lzo2");
 
     let out_include_path = out_path.join("lzo/include");
 
-    fs::create_dir_all(out_include_path.join("lzo")).unwrap();
-    fs::read_dir("lzo/include/lzo").unwrap().for_each(|file| {
-        let file_path = file.unwrap().path();
-        fs::copy(file_path.to_owned(), out_path.join(file_path)).unwrap();
-    });
+    fs::create_dir_all(out_include_path.join("lzo")).expect("Unable to create header output dir!");
+
+    for f in fs::read_dir(source.join("include/lzo")).unwrap() {
+        let file_path = f.unwrap().path();
+        let src = file_path.to_owned();
+        let dst = out_path.join(file_path);
+        fs::copy(&src, &dst)
+            .map_err(|err| {
+                format!(
+                    "Encountered error while copying {} to {}: {}",
+                    src.display(),
+                    dst.display(),
+                    err
+                )
+            })
+            .unwrap();
+    }
 
     vec![out_include_path]
 }
