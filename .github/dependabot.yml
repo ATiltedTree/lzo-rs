@@ -4,11 +4,17 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - ":wrench: maintenance"
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - ":wrench: maintenance"
   - package-ecosystem: "cargo"
     directory: "/lzo-sys"
     schedule:
       interval: "daily"
+    labels:
+      - ":wrench: maintenance"
