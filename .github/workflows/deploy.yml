@@ -19,6 +19,10 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+      - name: Setup | Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "^1.13.1"
       - name: Setup | Cargo Login
         uses: actions-rs/cargo@v1
         with:
@@ -27,19 +31,15 @@ jobs:
       - name: Setup | Release notes
         id: release_notes
         run: |
-          # Temporary fix for https://github.com/actions/setup-go/issues/14
-          export PATH=$PATH:$(go env GOPATH)/bin
           go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
-          echo "::set-output notes=$(git-chglog -c .github/chglog/release.yml $(git describe --tags))
+          git-chglog -c .github/chglog/release.yml -o notes.md $(git describe --tags)
       - name: Deploy | Cargo
         uses: actions-rs/cargo@v1
         with:
           command: publish
       - name: Deploy | Github
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.release_notes.outputs.notes }}
+          body_path: notes.md
