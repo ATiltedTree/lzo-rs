@@ -24,7 +24,7 @@ jobs:
         with:
           go-version: "^1.13.1"
       - name: Setup | Cargo Login
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1.0.3
         with:
           command: login
           args: ${{ secrets.CARGO_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
           go get -u github.com/git-chglog/git-chglog/cmd/git-chglog
           git-chglog -c .github/chglog/release.yml -o notes.md $(git describe --tags)
       - name: Deploy | Cargo
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1.0.3
         with:
           command: publish
       - name: Deploy | Github
